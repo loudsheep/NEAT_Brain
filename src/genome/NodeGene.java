@@ -1,6 +1,6 @@
 package genome;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class NodeGene extends Gene implements Comparable<NodeGene> {
 
@@ -10,7 +10,45 @@ public class NodeGene extends Gene implements Comparable<NodeGene> {
         OUTPUT
     }
 
+    public enum FUNC {
+        SQR,
+        TAN,
+        SIN,
+        SIG,
+        SIGN;
+
+        private static final List<FUNC> VALUES =
+                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final int SIZE = VALUES.size();
+        private static final Random RANDOM = new Random();
+
+        public static FUNC randomFunc() {
+            return VALUES.get(RANDOM.nextInt(SIZE));
+        }
+    }
+
+    public static float sqr(float x) {
+        return x * x;
+    }
+
+    public static float tan(float x) {
+        return (float) Math.tan(x);
+    }
+
+    public static float sin(float x) {
+        return (float) Math.sin(x);
+    }
+
+    public static float sign(float x) {
+        return Math.signum(x);
+    }
+
+    public static float sig(float x) {
+        return (float) (1f / (1 + Math.exp(-x)));
+    }
+
     private TYPE type;
+    private FUNC func = FUNC.SIG;
     private float x;
     private double y;
     private float output;
@@ -33,6 +71,7 @@ public class NodeGene extends Gene implements Comparable<NodeGene> {
     }
 
     public void calculate() {
+        output = 0;
         float s = 0;
         for (ConnectionGene c : connections) {
             if (c.isEnabeled()) {
@@ -40,12 +79,15 @@ public class NodeGene extends Gene implements Comparable<NodeGene> {
             }
         }
         output = activation(s);
-        //System.out.println("Out -- " + s);
     }
 
     private float activation(float x) {
-        //return 5f;
-        return (float) (1f / (1 + Math.exp((double) -x)));
+        if (func == FUNC.SQR) return sqr(x);
+        if (func == FUNC.TAN) return tan(x);
+        if (func == FUNC.SIN) return sin(x);
+        if (func == FUNC.SIGN) return sign(x);
+
+        return sig(x);
     }
 
     public float getX() {
@@ -72,6 +114,14 @@ public class NodeGene extends Gene implements Comparable<NodeGene> {
         this.type = type;
     }
 
+    public FUNC getFunc() {
+        return func;
+    }
+
+    public void setFunc(FUNC func) {
+        this.func = func;
+    }
+
     public ArrayList<ConnectionGene> getConnections() {
         return connections;
     }
@@ -89,7 +139,9 @@ public class NodeGene extends Gene implements Comparable<NodeGene> {
     }
 
     public float getOutput() {
-        return output;
+        float out = output;
+        output = 0;
+        return out;
     }
 
     public void setOutput(float output) {

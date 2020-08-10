@@ -35,6 +35,8 @@ public class Calculator {
                 outputNodes.add(n);
             }
 
+            n.setConnections(conns);
+
         }
 
         //System.out.println(" In size: " + inputNodes.size());
@@ -46,13 +48,13 @@ public class Calculator {
             }
         });
 
-        for (ConnectionGene c : conns) {
-            //NodeGene from = c.getFrom();
-            NodeGene to = c.getTo();
-
-            to.getConnections().add(c);
-
-        }
+//        for (ConnectionGene c : conns) {
+//            //NodeGene from = c.getFrom();
+//            NodeGene to = c.getTo();
+//
+//            to.getConnections().add(c);
+//
+//        }
 
 
     }
@@ -87,12 +89,12 @@ public class Calculator {
 
 
         for (int i = 0; i < inputNodes.size(); i++) {
-            inputNodes.get(i).setConnections(g.getConnections());
+            //inputNodes.get(i).setConnections(g.getConnections());
             inputNodes.get(i).setOutput(input[i]);
         }
 
         for (int i = 0; i < hiddenNodes.size(); i++) {
-            hiddenNodes.get(i).setConnections(g.getConnections());
+            //hiddenNodes.get(i).setConnections(g.getConnections());
             hiddenNodes.get(i).calculate();
             //System.out.println("Calc -- " + hiddenNodes.get(i).getX());
         }
@@ -100,7 +102,7 @@ public class Calculator {
         float[] output = new float[outputNodes.size()];
         //System.out.println(outputNodes.size());
         for (int i = 0; i < outputNodes.size(); i++) {
-            outputNodes.get(i).setConnections(g.getConnections());
+            //outputNodes.get(i).setConnections(g.getConnections());
             outputNodes.get(i).calculate();
             output[i] = outputNodes.get(i).getOutput();
         }

@@ -15,8 +15,8 @@ public class Visual extends PApplet {
     private int inNodes, hiddenNodes, outNoides;
     private float cell_size;
 
-    private String[] buttons = {"mutate link", "mutate node", "random weight", "shift weight", "toggle link", "mutate"};
-    private String[] func = {"mutateLink", "mutateNode", "mutateRandomWeight", "mutateShiftWeight", "mutateToggleLink", "mutate"};
+    private String[] buttons = {"mutate link", "mutate node", "random weight", "shift weight", "toggle link", "mutate func", "mutate", "reset brain"};
+    private String[] func = {"mutateLink", "mutateNode", "mutateRandomWeight", "mutateShiftWeight", "mutateToggleLink", "mutateNodeFunc", "mutate", "clear"};
 
     private ArrayList<NodeGene> nodes = new ArrayList<>();
     private ArrayList<ConnectionGene> conns = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Visual extends PApplet {
 
     public void setup() {
         Random r = new Random();
-        brain = new Brain(4, 1);
+        brain = new Brain(9, 6);
         nodes = brain.getGenome().getNodes();
         conns = brain.getGenome().getConnections();
 
@@ -58,7 +58,7 @@ public class Visual extends PApplet {
 //        brain.getGenome().mutateLink();
 //        brain.getGenome().mutateLink();
 
-        System.out.println(conns.size() + " -- size");
+        //System.out.println(conns.size() + " -- size");
 
 
         for (NodeGene n : nodes) {
@@ -75,7 +75,7 @@ public class Visual extends PApplet {
             }
         }
 
-        System.out.println(inputNodes);
+        //System.out.println(inputNodes);
         float[] arr = {1, 1, 1, 1};
 //        System.out.println(Arrays.toString(brain.getGenome().getCalc().outputFromArray(arr)));
         //System.out.println(Arrays.toString(brain.getGenome().calculate2(arr)));
@@ -99,6 +99,8 @@ public class Visual extends PApplet {
         fill(0);
 
         rect(0, 0, width, panel_height);
+
+        textSize(10);
 
         textAlign(CENTER);
 
@@ -153,9 +155,17 @@ public class Visual extends PApplet {
         for (NodeGene n : nodes) {
             stroke(186, 186, 0);
             fill(20);
-            float x = (float) n.getX() * width;
+            float x = n.getX() * width;
             float y = (float) n.getY() * (height - panel_height) + panel_height;
             ellipse(x, y, cell_size, cell_size);
+
+
+            textSize(cell_size / 2);
+            textAlign(CENTER);
+            fill(186, 186, 0);
+            if (n.getFunc() != null) {
+                text(n.getFunc().toString(), x, y + cell_size / 4);
+            }
 
 //            fill(186, 186, 0);
 //            textAlign(CENTER, CENTER);
@@ -171,7 +181,7 @@ public class Visual extends PApplet {
 
         float[] arr = new float[inNodes];
         for (int i = 0; i < inNodes; i++) {
-            arr[i] = (float) Math.random();
+            arr[i] = 1;
         }
         //System.out.println(Arrays.toString(brain.getGenome().getCalc().outputFromArray(arr)));
         System.out.println(brain.getGenome().getConnections().size() + " -- conn size");
